@@ -1,0 +1,37 @@
+import math
+
+# This function goes through with sieve of erostathenes
+# it returns the primes from 0 to 1000, 0 and 1 are special cases
+def sieve ():
+	prime = []
+	primex = []
+	for i in range(0, 1000):
+		prime.append(1)
+	prime[1] = 0
+	prime[0] = 0
+	for i in range(2, 1000):
+		if (prime[i] == 1):
+			j = 2
+			while(i * j < 1000):
+				prime[j * i] = 0
+				j = j + 1
+	for x, y in enumerate(prime):
+		if(y):
+			primex.append(x)
+	return primex
+
+# This function checks each prime above 9 if it's a palindrome
+# the one line reverse is convert a typecast x from string slicing from 0 to end going by -1, "backwards"
+def palindrome(list):
+	final = []
+	max = 0
+	for x in list:
+		if (x > 9):
+			x_reverse = int(str(x)[::-1])
+			if (x_reverse == x):
+				final.append(x)
+	print final[-1]
+
+if __name__ == "__main__":
+	prime = sieve()
+	palindrome(prime)

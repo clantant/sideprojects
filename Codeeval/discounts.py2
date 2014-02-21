@@ -1,0 +1,69 @@
+import sys
+import fractions
+
+# This function takes a line of the form "name1, name2, ...;product1, product2,
+# ..." and returns a list with members [list of names, list of products]
+def parse(line):
+	line = line.strip('\n')
+	line = line.split(';')
+	names = line[0]
+	products = line[1]
+	names = names.split(',')
+	products = products.split(',')
+	lists = [names, products]
+	return lists
+
+# This function takes in a list with members [list of names, list of products]
+# Then it performs score on each name product combination and stores it in a dictionary
+# Then it takes the max of each product / name suitability, accounting for only
+# one product per person and only one person per product (one-to-one)
+# It adds those suitability scores together and outputs the result
+def suitability(lists):
+	scores = {}
+	names = lists[0]
+	products = lists[1]
+	for name in names:
+		for product in products:
+			ss = score(name, product)
+			key = name + ', ' + product
+			scores[key] = ss
+	top_key = max(scores, key=scores.get)
+	top_score = scores[top_key]
+	print scores
+	print "%.2f" % top_score
+	
+
+# This function takes in a name and a product then
+# performs this algorithm and returns the result
+# 1. If the number of letters in the product's name is even then the SS is the number of vowels (a, e, i, o, u, y) in the customer's name multiplied by 1.5. 
+# 2. If the number of letters in the product's name is odd then the SS is the number of consonants in the customer's name. 
+# 3. If the number of letters in the product's name shares any common factors (besides 1) with the number of letters in the customer's name then the SS is multiplied by 1.5. 
+def score(name, product):
+	vowels = ['a', 'e', 'i', 'o', 'u', 'y']
+	if (len(product) % 2 == 0):
+		vowel = 0
+		for letter in name:
+			if(vowels.count(letter) == 1):
+				vowel = vowel + 1
+		SS = vowel * 1.5
+	else:
+		consonant = 0
+		for letter in name:
+			if(vowels.count(letter) == 0):
+				consonant = consonant + 1
+		SS = consonant
+	if (fractions.gcd(len(product), len(name)) != 1):
+		SS = SS * 1.5
+	return SS
+
+if __name__ == "__main__":
+	if(len(sys.argv) < 2):
+		print "Need test file"
+		exit(-1)
+	else:
+		f = sys.argv[1]
+		file = open(f, 'r')
+		for line in file:
+			lists = parse(line)
+			suitability(lists)
+		file.close()

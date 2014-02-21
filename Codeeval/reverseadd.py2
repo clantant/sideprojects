@@ -1,0 +1,24 @@
+import sys
+
+def revadd(x):
+	iter = 0
+	while(1):
+		x_reverse = int(str(x)[::-1])
+		if(x_reverse == x):
+			print iter, x
+			break
+		x = x + x_reverse
+		iter = iter + 1
+
+if __name__ == "__main__":
+	if(len(sys.argv) < 2):
+		print "Need test file as argument"
+		exit(-1)
+	else:
+		file = sys.argv[1]
+		f = open(file, 'r')
+		for x in f:
+			x.strip("\n")
+			x = int(x)
+			revadd(x)
+	exit(0)

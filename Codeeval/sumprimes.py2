@@ -1,0 +1,29 @@
+import math
+
+def sieve ():
+	prime = []
+	primex = []
+	for i in range(0, 1000):
+		prime.append(1)
+	prime[1] = 0
+	prime[0] = 0
+	for i in range(2, 1000):
+		if (prime[i] == 1):
+			j = 2
+			while(i * j < 1000):
+				prime[j * i] = 0
+				j = j + 1
+	for x, y in enumerate(prime):
+		if(y):
+			primex.append(x)
+	return primex
+
+def sum(list):
+	total = 0
+	for x in list:
+		total = total + x
+	print total
+
+if __name__ == "__main__":
+	prime = sieve()
+	sum(prime)

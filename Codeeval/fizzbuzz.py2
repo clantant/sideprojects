@@ -1,0 +1,45 @@
+import sys
+
+# This function goes through each line in the file, makes it into a 3 integer list, passes the numbers to divide by
+# and the numbers to look up to to the divs (divisors) helper function. Then taking a list from those it assigns an F
+# where appropriate in a number list, a B, and if an F already exists then an FB. Finally the remove 0 from the list,
+# print out the list mapped to strings joined by spaces.
+def check (file):
+	for num_list in file:
+		if((num_list == '') | (num_list == '\n')):
+			return 0
+		num_list = num_list.strip('\n')
+		num_list = num_list.split(' ')
+		num_list = map(int, num_list)
+		fs = divs(num_list[0], num_list[2])
+		bs = divs(num_list[1], num_list[2])
+		final = range(num_list[2] + 1)
+		for x in fs:
+			final[x] = 'F'
+		for x in bs:
+			if (final[x] == 'F'):
+				final[x] = 'FB'
+			else:
+				final[x] = 'B'
+		final = final[1 : ]
+		print '%s' % ' '.join(map(str, final))
+
+# This function helps the check by taking in the divisor, the size and outputting a list of values that are divisible
+# from 1 to the size given.
+def divs (a, size):
+	list = []
+	for i in range(1, size + 1):
+		if (i % a == 0):
+			list.append(i)
+	return list
+
+# Allows for a missing argument, will break out with an explanation, else it opens the file and runs check on it.
+if __name__ == "__main__":
+	if(len(sys.argv) < 2):
+		print "Need test file as argument"
+		exit(0)
+	else:
+		file = sys.argv[1]
+		f = open(file, 'r')
+		check(f)
+		f.close()
